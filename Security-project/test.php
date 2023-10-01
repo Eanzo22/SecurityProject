@@ -1,0 +1,33 @@
+<?php
+include("functions/functions.php");
+$img = file_get_contents("download.jpg");
+echo "\n================================================\n";
+//file_put_contents("img.txt",$img );
+ //$data = $img;
+// $encryption_key = $_POST["EncryptionKey"];
+ //$mode = $_POST["Mode"];
+// $key_size = $_POST["KeySize"];
+// $encrypted_data=encrypt($data,$key,$mode,$key_size);
+
+$cipher = "aes-128-cbc";
+$encryption_key = "keykeykeykeykeyk";
+//echo "\n";
+//$encryption_key2=openssl_random_pseudo_bytes(16);
+//echo strlen($encryption_key)."\n";
+//echo strlen($encryption_key2);
+$iv_size=openssl_cipher_iv_length($cipher);
+$iv = openssl_random_pseudo_bytes($iv_size);
+echo $iv."\n";
+$encrypted_data=openssl_encrypt($img, $cipher, $encryption_key, 0,$iv);
+file_put_contents("enc_img.jpg", $encrypted_data);
+//echo "Encrypted data :".$encrypted_data;
+//$encrypted_data = openssl_encrypt($img, $cipher, $encryption_key, OPENSSL_RAW_DATA);
+//file_put_contents("enc_data.txt", $encrypted_data);
+//file_put_contents("enc_img.jpg", $encrypted_data);
+$iv_size = openssl_cipher_iv_length($cipher);
+$iv = openssl_random_pseudo_bytes($iv_size);
+$decrypted_data=openssl_decrypt($encrypted_data, $cipher, $encryption_key, 0, $iv);
+//$cipher = "aes-128-ecb";
+//$decrypted_data=decrypt($encrypted_data, $key, $mode,$key_size);
+file_put_contents("dec_img.jpg", $decrypted_data);
+//echo "".$encryption_key;
